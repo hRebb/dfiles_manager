@@ -2,6 +2,9 @@ import typer
 from typing import Optional
 from pathlib import Path
 
+app = typer.Typer()
+
+@app.command('run')
 def main(extension: str,
          directory: Optional[str] = typer.Argument(None, help="Directory where to look for"),
          delete: Optional[bool] = typer.Option(False, help="Delete founded files")):
@@ -29,5 +32,20 @@ def main(extension: str,
         for file in files:
             typer.echo(file)        
 
+@app.command()
+def search(extension: str):
+    """
+    Search for file with a given extension
+    """
+    main(extension=extension, directory=None, delete=False)
+
+
+@app.command()
+def delete(extension: str):
+    """
+    Delete file with a given extension
+    """
+    main(extension=extension, directory=None, delete=True)
+
 if __name__ == "__main__":
-    typer.run(main)
+    app()
